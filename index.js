@@ -102,6 +102,17 @@ app.get('/seccion',(req, res) => {
     });
     // res.sendFile(path.join(__dirname, 'index.html'));
 });
+// SELECT * FROM seccionbyID
+app.get('/seccionbyid',(req, res) => {
+    var idSeccion = req.query.idseccion 
+    console.log(req.query.idseccion);
+
+    conexion.query(`SELECT * FROM seccion where idseccion = "${idSeccion}"`, function (err , result, fields){
+        if(err)throw err;
+        res.json(result);
+    });
+    // res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // app.get('/cursobyid',(req, res) => {
 //     var id = req.query.idcurso 
@@ -173,9 +184,9 @@ app.post('/persona',(req,res)=>{
 
 //************** INSERT INTO CURSO ****************************************
 app.post('/curso',(req,res)=>{
-    console.log("################################## CURSO PRUEBA ####")
+    console.log("#xz################################# CURSO PRUEBA ####")
     console.log(req.query);
-    console.log("################################## CURSO PRUEBA ####");
+    console.log("#x################################# CURSO PRUEBA ####");
 
     var titulo_curso = req.query.titulo_curso;
     var descripcion_curso = req.query.descripcion_curso;
@@ -185,22 +196,48 @@ app.post('/curso',(req,res)=>{
     var consulta = consulta + `VALUES ('${titulo_curso}', '${descripcion_curso}', '${requisitos}')`;
 
     conexion.query( consulta , function(error, resultado, field){
-        if(error) throw error;
-        res.status(200).json(resultado);
+        if(error){
+            console.log('########>>> error = ' + error);
+            throw error;
+        } else{
+            console.log('########### resultado ############33');
+            console.log(resultado);
+            console.log('##################################33');
+            res.status(200).json(resultado);  
+        }
     });
-})
-
+})  
+  
 //************** INSERT INTO SECCION ****************************************
 app.post('/seccion',(req,res)=>{
-    console.log("################################## CURSO PRUEBA ####")
+    console.log("#y################################# CURSO PRUEBA ####")
     console.log(req.query);
-    console.log("################################## CURSO PRUEBA ####");
+    console.log("#xx################################# CURSO PRUEBA ####");
 
     var nombre_seccion = req.query.nombre_seccion;
     var idcurso = req.query.idcurso; 
     
     var consulta = "INSERT INTO seccion (idcurso, nombre_seccion )";
     var consulta = consulta + `VALUES ('${idcurso}', '${nombre_seccion}')`;
+
+    conexion.query( consulta , function(error, resultado, field){
+        if(error) throw error;
+        res.status(200).json(resultado);
+    });
+})
+
+//************** INSERT INTO VIDEO ****************************************
+app.post('/video',(req,res)=>{
+    console.log("################################## VIDEO PRUEBA ####")
+    console.log(req.query);
+    console.log("################################## VIDEO PRUEBA ####");
+
+    var tituloVideo = req.query.titulo;
+    var urlVideo = req.query.urlvideo; 
+    var idSeccion = req.query.idseccion;
+    
+    var consulta = "INSERT INTO video (titulo, urlvideo, idseccion )";
+    var consulta = consulta + `VALUES ('${tituloVideo}', '${urlVideo}', '${idSeccion}')`;
 
     conexion.query( consulta , function(error, resultado, field){
         if(error) throw error;
